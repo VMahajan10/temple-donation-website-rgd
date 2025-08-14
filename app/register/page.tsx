@@ -27,17 +27,28 @@ export default function RegisterPage() {
     setIsLoading(true)
 
     try {
-      // Simulate registration API call
-      await new Promise((resolve) => setTimeout(resolve, 1500))
-
-      toast({
-        title: "Registration successful!",
-        description: "Please check your email for a verification code.",
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
       })
+
+      if (response.ok) {
+        const data = await response.json()
+        
+        toast({
+          title: "Registration successful!",
+          description: "Please check your email for a verification code.",
+        })
 
       // Redirect to email verification page with email parameter
       router.push(`/verify-email?email=${encodeURIComponent(email)}`)
-    } catch (error) {
+    } else {
+      throw new Error('Registration failed')
+    }
+  } catch (error) {
       toast({
         title: "Registration failed",
         description: "Please try again",

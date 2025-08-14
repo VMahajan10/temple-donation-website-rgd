@@ -37,16 +37,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       })
-
       if (response.ok) {
-        const userData = await response.json()
-        setUser(userData)
-        localStorage.setItem("temple_user", JSON.stringify(userData))
+        const data = await response.json()
+        
+        // Store the JWT token
+        localStorage.setItem("temple_token", data.token)
+        
+        // Create user object from the response
+        const user = {
+          id: "demo-id",
+          name: email.split('@')[0], // Extract name from email
+          email: email,
+          role: email.includes('admin') ? (email.includes('head') ? 'head_admin' : 'admin') : 'user'
+        }
+        
+        setUser(user)
+        localStorage.setItem("temple_user", JSON.stringify(user))
         return true
       }
       return false
@@ -58,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),

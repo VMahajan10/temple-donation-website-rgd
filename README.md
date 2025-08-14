@@ -1,30 +1,104 @@
-# Temple Donation Frontend
+# Temple Donation Backend - Java Spring Boot
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+This is the Java Spring Boot backend for the Temple Donation website, designed to work with Supabase for database, authentication, and file storage.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/vaibym2-7354s-projects/v0-temple-donation-frontend)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/6BFsrFYzdzc)
+## Current Progress - Step 1: Project Setup ✅
 
-## Overview
+### What's Been Created:
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+1. **Maven Project Structure** (`pom.xml`)
+   - Spring Boot 3.2.0 with Java 17
+   - Supabase Java client dependencies
+   - JWT support for authentication
+   - PostgreSQL driver for database
+   - Spring Security for authorization
 
-## Deployment
+2. **Application Configuration** (`application.yml`)
+   - Supabase connection settings
+   - JWT configuration
+   - CORS settings
+   - File upload configuration
+   - Environment variable support
 
-Your project is live at:
+3. **Main Application Class** (`TempleDonationApplication.java`)
+   - Spring Boot entry point
+   - JPA auditing enabled
 
-**[https://vercel.com/vaibym2-7354s-projects/v0-temple-donation-frontend](https://vercel.com/vaibym2-7354s-projects/v0-temple-donation-frontend)**
+4. **Configuration Classes**
+   - `SupabaseConfig.java` - Supabase client configuration
+   - `SecurityConfig.java` - Spring Security setup with JWT
+   - `JwtAuthenticationEntryPoint.java` - Unauthorized access handling
+   - `JwtAuthenticationFilter.java` - JWT token validation
+   - `JwtService.java` - JWT token generation and validation
 
-## Build your app
+### Project Structure:
+```
+temple-donation-backend/
+├── pom.xml
+├── src/main/java/com/temple/
+│   ├── TempleDonationApplication.java
+│   ├── config/
+│   │   ├── SupabaseConfig.java
+│   │   └── SecurityConfig.java
+│   └── security/
+│       ├── JwtAuthenticationEntryPoint.java
+│       ├── JwtAuthenticationFilter.java
+│       └── JwtService.java
+└── src/main/resources/
+    └── application.yml
+```
 
-Continue building your app on:
+## Next Steps:
 
-**[https://v0.dev/chat/projects/6BFsrFYzdzc](https://v0.dev/chat/projects/6BFsrFYzdzc)**
+### Step 2: Database Schema and Entities
+- Create JPA entities matching the UML diagram
+- Set up Supabase database tables
+- Implement Row Level Security (RLS) policies
 
-## How It Works
+### Step 3: Authentication Integration
+- Integrate with Supabase Auth
+- Create user registration and login endpoints
+- Implement role-based access control
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Step 4: Core Business Logic
+- Item management (CRUD operations)
+- Claim system implementation
+- Image upload and approval workflow
+
+### Step 5: API Endpoints
+- REST controllers for all operations
+- Error handling and validation
+- Audit logging
+
+## Environment Variables Needed:
+
+Create a `.env` file or set these environment variables:
+
+```bash
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SUPABASE_DB_URL=jdbc:postgresql://db.supabase.co:5432/postgres
+SUPABASE_DB_USER=postgres
+SUPABASE_DB_PASSWORD=your-db-password
+JWT_SECRET=your-jwt-secret-key-here-make-it-long-and-secure
+CORS_ALLOWED_ORIGINS=http://localhost:3000,https://your-frontend-domain.com
+```
+
+## Running the Application:
+
+```bash
+# Build the project
+mvn clean install
+
+# Run the application
+mvn spring-boot:run
+```
+
+The application will start on `http://localhost:8080/api`
+
+## Notes:
+
+- The current implementation has linter errors because the full project structure isn't complete yet
+- We're building this step by step to ensure each component is properly integrated
+- The next step will focus on creating the database entities and schema
